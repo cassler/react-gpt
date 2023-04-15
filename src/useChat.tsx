@@ -14,7 +14,7 @@ export const useChat = (useGpt4: boolean = false) => {
   const [messages, setMessages] = useState(() => createSystemPrompt())
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<Error | null>(null)
-  const chatLogRef = useRef(null);
+
 
   const fetchChatCompletions = async (message: string) => {
     let thisMessage:ChatCompletionRequestMessage = { "role": "user", "content": message }
@@ -37,6 +37,10 @@ export const useChat = (useGpt4: boolean = false) => {
     }
   }
 
+  /**
+   * Workaround: Scroll to bottom of chat log whenever a message is added
+   */
+  const chatLogRef = useRef(null);
   useEffect(() => {
     if (chatLogRef.current) {
       // @ts-ignore
@@ -44,9 +48,6 @@ export const useChat = (useGpt4: boolean = false) => {
     }
   }, [chatLogRef, messages])
 
-  // useEffect(() => {
-  //   async () => await fetchChatCompletions('Hi there')
-  // }, [])
 
   const nonSystemMessages = messages.filter(i => i.role !== 'system')
 
