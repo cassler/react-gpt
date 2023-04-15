@@ -9,6 +9,9 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+import ReactMarkdown from 'react-markdown';
+
+
 export const useChat = (useGpt4: boolean = false) => {
   const [chatCompletions, setChatCompletions] = useState<unknown>([])
   const [messages, setMessages] = useState(() => createSystemPrompt())

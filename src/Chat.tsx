@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useChat } from "./useChat";
 import launchSolid from './assets/logo.png'
 import { Switch, Transition } from '@headlessui/react';
-
+import ReactMarkdown from 'react-markdown';
 import { ChatCompletionRequestMessage } from "openai";
+import {useCopyToClipboard} from './useCopyToClipboard';
 
 export function Avatar({role}:{role: ChatCompletionRequestMessage['role']}) {
   if (role === 'assistant') {
@@ -13,30 +14,31 @@ export function Avatar({role}:{role: ChatCompletionRequestMessage['role']}) {
   }
 }
 
+
 export const ChatBubble = ({message}: {message:ChatCompletionRequestMessage}) => {
+  const [value, copy] = useCopyToClipboard();
   return (
-    <Transition.Child
-      enter="transition-all ease-linear duration-300"
-      enterFrom="opacity-0 scale-95 translate-y-4"
-      enterTo="opacity-100 scale-100 translate-y-0"
-      leave="transition-opacity duration-150"
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <div className='grid grid-cols-[1fr,5fr] p-2 self-start'>
+
+      <div className='grid grid-cols-[64px,5fr] p-2 py-4 self-start'>
         <h4 className='w-16 font-semibold tracking-tight'>
           <Avatar role={message.role} />
+
         </h4>
-        <div className='text-sm pr-4 space-y-3'>
-          {message.content.split(/\n/).map((i,idx) => <p key={`para-${idx}`}>{i}</p>)}
+        <div className='text-sm pr-4 space-y-3 leading-snug prose prose-sm prose-slate prose-headings:text-pink-700 bg-white shadow p-4 rounded-lg'>
+          <ReactMarkdown>{message.content}</ReactMarkdown>
+          <div className="footer flex gap-2 pt-4 tracking-tight font-light">
+            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>copy</button>
+            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>share</button>
+            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>save</button>
+            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>favorite</button>
+          </div>
         </div>
       </div>
-    </Transition.Child>
   )
 }
 
 export const ThinkingNode = () => (
-  <div className='self-center bg-slate-300 animate-pulse  text-white m-1 rounded h-auto items-center flex justify-center'>
+  <div className='self-center bg-slate-50 animate-pulse  text-black m-1 rounded h-auto items-center flex justify-center'>
     <p className='text-sm uppercase p-4 font-light tracking-wide'>thinking...</p>
   </div>
 )
@@ -64,13 +66,40 @@ export const Chat = ({className}: {className: string}) => {
       <Transition
         as='div'
         show
-        className='h-[calc(100%-60px)] bg-slate-50 overflow-auto divide-y'
+        appear
+        className='h-[calc(100%-86px)] bg-slate-50 overflow-auto divide-y'
         ref={chatLogRef}
       >
         {error && error.message}
-        {nonSystemMessages.map((m, idx) => <ChatBubble message={m} />)}
-        {isLoading && <ThinkingNode />}
-        {!isLoading && nonSystemMessages.length === 0 && <SplashMessage />}
+        {nonSystemMessages.map((m, idx) =>
+          <Transition.Child
+            appear
+            enter="transition-all ease-linear duration-300"
+            enterFrom="opacity-0 scale-95 translate-y-4"
+            enterTo="opacity-100 scale-100 translate-y-0"
+            leave="transition-opacity duration-150"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <ChatBubble message={m} />
+          </Transition.Child>
+        )}
+
+        <Transition
+            show={isLoading}
+            appear
+            unmount={false}
+            enter="transition-all ease-linear duration-300"
+            enterFrom="opacity-0 scale-95 translate-y-4"
+            enterTo="opacity-100 scale-100 translate-y-0"
+            leave="transition-opacity duration-0"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <ThinkingNode />
+          </Transition>
+
+        {!isLoading && nonSystemMessages.length === 0 && (<SplashMessage />)}
       </Transition>
 
       <div className='p-2 bg-slate-100 border-t bottom-0 absolute w-full'>
