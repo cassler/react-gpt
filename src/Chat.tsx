@@ -21,7 +21,7 @@ export function Avatar({
   } else {
     return (
       <UserIcon
-        className="rounded-sm bg-pink-600 text-pink-200 w-12 h-12 border-2 border-orange-500"
+        className="rounded-sm  from-regal-violet via-savage-magenta to-optimistic-orange p-2 w-12 h-12 text-white border-regal-violet bg-gradient-to-br"
         aria-label={role}
       />
     );
@@ -35,20 +35,11 @@ export const ChatBubble = ({
 }) => {
   const [value, copy] = useCopyToClipboard();
   return (
-    <div className="grid grid-cols-[64px,5fr] p-2 py-2 self-start group">
-      <h4 className="w-16 font-semibold tracking-tight p-2 flex flex-col justify-between gap-2 flex-grow h-full">
+    <div className="grid grid-cols-[min-content,5fr] p-2 py-2 self-start group">
+      <h4 className="w-16 font-semibold tracking-tight flex flex-col justify-between gap-2 flex-grow h-full">
         <Avatar role={message.role} />
-        <div className="footer gap-2 gap-y-0 tracking-tight font-light [&_svg]:w-4 text-xs text-slate-400 [&_button]:block flex items-center flex-wrap justify-center">
-          <button onClick={() => copy(message.content)}>
-            <HandThumbUpIcon />
-          </button>
-          <button onClick={() => copy(message.content)}>
-            <HandThumbDownIcon />
-          </button>
-          <button onClick={() => copy(message.content)}>copy</button>
-        </div>
       </h4>
-      <div className="text-sm p-4 space-y-3 leading-snug prose prose-sm prose-slate prose-headings:text-pink-700 bg-white shadow rounded-lg">
+      <div className="text-sm p-4 space-y-3 leading-snug self-start prose prose-sm prose-slate prose-headings:text-pink-700 bg-white shadow rounded-lg">
         <ReactMarkdown>{message.content}</ReactMarkdown>
       </div>
     </div>
@@ -109,7 +100,7 @@ export const Chat = ({ className }: { className: string }) => {
         show
         appear
         ref={chatLogRef}
-        className="h-[calc(100%-86px)] bg-slate-50 overflow-auto"
+        className="h-[calc(100%-83px)] bg-slate-50 overflow-auto"
       >
         {error && error.message}
         {nonSystemMessages.map((m, idx) => (
@@ -129,19 +120,19 @@ export const Chat = ({ className }: { className: string }) => {
         {!isLoading && nonSystemMessages.length === 0 && <SplashMessage />}
       </Transition>
 
-      <div className="p-2 bg-slate-100 border-t bottom-0 absolute w-full">
+      <div className="p-2 bg-slate-100 bottom-0 absolute w-full">
         <form
           className="group flex w-full rounded gap-2"
           onSubmit={sendMessage}
         >
           <input
-            className="px-4 py-2 focus:outline-none rounded-l flex-grow border"
+            className="px-4 py-2 focus:outline-none rounded-full flex-grow border group-focus-within:ring-2 ring-savage-magenta"
             type="text"
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
           <button
-            className="p-2 px-3 rounded bg-white border text-indigo-600 font-medium"
+            className="p-2 px-8 font-medium rounded-full text-center text-white bg-gradient-to-r from-regal-violet to-savage-magenta"
             type="submit"
           >
             Send
@@ -151,7 +142,7 @@ export const Chat = ({ className }: { className: string }) => {
           checked={use4}
           onChange={setUse4}
           as="div"
-          className="cursor-pointer flex text-xs py-1 items-center gap-2 text-slate-500 justify-end"
+          className="cursor-pointer flex text-xs pt-2 items-center gap-2 text-slate-500 justify-end"
         >
           <div className="flex-shrink-0">Use GPT-4</div>
           <input readOnly type="checkbox" checked={use4} />
