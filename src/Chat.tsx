@@ -14,7 +14,7 @@ export function Avatar({role}:{role: ChatCompletionRequestMessage['role']}) {
 }
 
 export const Chat = ({className}: {className: string}) => {
-  const chat = useChat();
+  const chat = useChat(true);
   const [value, setValue] = useState<string>('')
 
   const { fetchChatCompletions,chatLogRef, isLoading, error, nonSystemMessages }  = chat;

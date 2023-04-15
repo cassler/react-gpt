@@ -2,7 +2,9 @@
 
 Welcome to the Launch OpenAI Chatbot Demo App! This app is a simple yet powerful demonstration of GPT-3.5 and GPT-4 models by OpenAI. It enables you to create engaging and context-injected chat experiences. This README will guide you through setting up and running the app on your local machine.
 
-![](public/screenshot.png)
+| Basic | Yoda | Cowboy |
+| ---- | --- | --- |
+![](public/screenshot.png) | ![](public/screenshot-2.png) | ![](public/screenshot-3.png) |
 
 
 ## Prerequisites
