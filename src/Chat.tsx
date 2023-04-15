@@ -23,26 +23,28 @@ export const Chat = ({className}: {className: string}) => {
   return (
     <div className={['relative', className].join(' ')}>
 
-      <Transition as='div' appear show className='h-[calc(100%-60px)] bg-slate-50 overflow-auto divide-y' ref={chatLogRef}>
+      <Transition as='div' show className='h-[calc(100%-60px)] bg-slate-50 overflow-auto divide-y' ref={chatLogRef}>
 
         <>
         {error && error.message}
         {nonSystemMessages.map((m, idx) => (
           <Transition.Child
-            appear={true}
             enter="transition-all ease-linear duration-300"
             enterFrom="opacity-0 scale-95 translate-y-4"
             enterTo="opacity-100 scale-100 translate-y-0"
             leave="transition-opacity duration-150"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
+            key={`${m.role}-${idx}`}
           >
-          <div className='grid grid-cols-[1fr,5fr] p-2 self-start' key={`${m.role}-${idx}`}>
-            <h4 className='w-16 font-semibold tracking-tight'>
-              <Avatar role={m.role} />
-            </h4>
-            <div className='text-sm pr-4 space-y-3'>{m.content.split(/\n/).map(i => <p>{i}</p>)}</div>
-          </div>
+            <div className='grid grid-cols-[1fr,5fr] p-2 self-start' key={`${m.role}-${idx}`}>
+              <h4 className='w-16 font-semibold tracking-tight'>
+                <Avatar role={m.role} />
+              </h4>
+              <div className='text-sm pr-4 space-y-3'>
+                {m.content.split(/\n/).map((i,idx) => <p key={`para-${idx}`}>{i}</p>)}
+              </div>
+            </div>
           </Transition.Child>
         ))}
         {isLoading && (
