@@ -2,10 +2,9 @@
 
 Welcome to the Launch OpenAI Chatbot Demo App! This app is a simple yet powerful demonstration of GPT-3.5 and GPT-4 models by OpenAI. It enables you to create engaging and context-injected chat experiences. This README will guide you through setting up and running the app on your local machine.
 
-| Basic | Yoda | Cowboy |
-| ---- | --- | --- |
-![](public/screenshot.png) | ![](public/screenshot-2.png) | ![](public/screenshot-3.png) |
-
+| Basic                      | Yoda                         | Cowboy                       |
+| -------------------------- | ---------------------------- | ---------------------------- |
+| ![](public/screenshot.png) | ![](public/screenshot-2.png) | ![](public/screenshot-3.png) |
 
 ## Prerequisites
 
@@ -28,4 +27,3 @@ A simple proof of concept of a GPT chat component with context-injection. By def
 -- `/src/createSystemPrompt.ts` is where we do some prompt engineering
 -- `/src/useChat.tsx` facilitates API communications and state handling
 -- `/src/Chat.tsx` React component with useChat hook
-
