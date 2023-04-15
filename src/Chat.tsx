@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useChat } from "./useChat";
 import launchSolid from './assets/logo.png'
-import { Transition } from '@headlessui/react';
+import { Switch, Transition } from '@headlessui/react';
 
 import { ChatCompletionRequestMessage } from "openai";
 
@@ -14,7 +14,8 @@ export function Avatar({role}:{role: ChatCompletionRequestMessage['role']}) {
 }
 
 export const Chat = ({className}: {className: string}) => {
-  const chat = useChat(true);
+  const [use4, setUse4] = useState<boolean>(false)
+  const chat = useChat(use4);
   const [value, setValue] = useState<string>('')
 
   const { fetchChatCompletions,chatLogRef, isLoading, error, nonSystemMessages }  = chat;
@@ -40,7 +41,7 @@ export const Chat = ({className}: {className: string}) => {
             <h4 className='w-16 font-semibold tracking-tight'>
               <Avatar role={m.role} />
             </h4>
-            <p className='text-sm pr-4'>{m.content}</p>
+            <div className='text-sm pr-4 space-y-3'>{m.content.split(/\n/).map(i => <p>{i}</p>)}</div>
           </div>
           </Transition.Child>
         ))}
@@ -57,9 +58,9 @@ export const Chat = ({className}: {className: string}) => {
         </>
       </Transition>
 
-      <div className='p-2 bg-slate-100 border-t h-[60px] bottom-0 absolute w-full'>
+      <div className='p-2 bg-slate-100 border-t bottom-0 absolute w-full'>
       <form
-        className=' focus-within:ring-2 flex w-full rounded'
+        className='group flex w-full rounded gap-2'
         onSubmit={(e) => {
           e.preventDefault();
           setValue('')
@@ -67,12 +68,17 @@ export const Chat = ({className}: {className: string}) => {
         }}
       >
         <input
-          className='px-4 py-2 focus:outline-none rounded-l border border-purple-400 border-r-purple-900 flex-grow'
+          className='px-4 py-2 focus:outline-none rounded-l shadow-inner border flex-grow group-focus-within:ring-2'
           type="text"
           value={value}
-          defaultValue={''} onChange={(e) => setValue(e.target.value)} />
-        <button className='p-2 px-3 rounded-r bg-purple-900 text-white font-medium tracking-tight' type='submit'>Send</button>
+          onChange={(e) => setValue(e.target.value)} />
+
+        <button className='p-2 px-3 rounded bg-white border text-indigo-600 font-medium tracking-tight group-focus-within:ring-2' type='submit'>Send</button>
       </form>
+        <Switch checked={use4} onChange={setUse4} as='div' className='cursor-pointer flex flex-shrink-0 items-center gap-2 text-xs pt-2 ml-auto mr-0 text-slate-500 justify-end'>
+          <div className='flex-shrink-0'>Use GPT-4</div>
+          <input readOnly type='checkbox' checked={use4} />
+        </Switch>
       </div>
     </div>
   )

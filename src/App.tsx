@@ -3,7 +3,10 @@ import { Chat } from './Chat'
 
 function App() {
   return (
-    <Chat className='rounded shadow w-[400px] h-[90vh] m-4' />
+    <div className="flex justify-center items-center h-screen bg-slate-200">
+
+      <Chat className='rounded-lg border border-slate-300 shadow w-[400px] h-[90vh] m-auto overflow-clip' />
+    </div>
   )
 }
 
