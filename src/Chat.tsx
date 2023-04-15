@@ -5,12 +5,14 @@ import { Switch, Transition } from '@headlessui/react';
 import ReactMarkdown from 'react-markdown';
 import { ChatCompletionRequestMessage } from "openai";
 import {useCopyToClipboard} from './useCopyToClipboard';
+// import from heroicons
+import { UserIcon, HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/react/24/solid'
 
 export function Avatar({role}:{role: ChatCompletionRequestMessage['role']}) {
   if (role === 'assistant') {
-    return <img src={launchSolid} className='w-12 border' alt={role} />
+    return <img src={launchSolid} className='w-12' alt={role} />
   } else {
-    return <div className='rounded-sm bg-gray-200 w-12 h-12 border-2 border-indigo-400' aria-label={role} />
+    return <UserIcon className='rounded-sm bg-pink-600 text-pink-200 w-12 h-12 border-2 border-orange-500' aria-label={role} />
   }
 }
 
@@ -19,18 +21,20 @@ export const ChatBubble = ({message}: {message:ChatCompletionRequestMessage}) =>
   const [value, copy] = useCopyToClipboard();
   return (
 
-      <div className='grid grid-cols-[64px,5fr] p-2 py-4 self-start'>
-        <h4 className='w-16 font-semibold tracking-tight'>
+      <div className='grid grid-cols-[64px,5fr] p-2 py-2 self-start group'>
+        <h4 className='w-16 font-semibold tracking-tight p-2'>
           <Avatar role={message.role} />
-
         </h4>
         <div className='text-sm pr-4 space-y-3 leading-snug prose prose-sm prose-slate prose-headings:text-pink-700 bg-white shadow p-4 rounded-lg'>
           <ReactMarkdown>{message.content}</ReactMarkdown>
-          <div className="footer flex gap-2 pt-4 tracking-tight font-light">
-            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>copy</button>
-            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>share</button>
-            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>save</button>
-            <button onClick={() => copy(message.content)} className='text-xs text-slate-400'>favorite</button>
+          <div className="footer flex gap-2 pt-4 tracking-tight font-light [&_svg]:w-4 text-xs text-slate-400 group-hover:opacity-100 opacity-0 transition-opacity duration-200">
+            <button onClick={() => copy(message.content)}>copy</button>
+            <button onClick={() => copy(message.content)}>share</button>
+            <button onClick={() => copy(message.content)}>save</button>
+            <button onClick={() => copy(message.content)}>favorite</button>
+            <button onClick={() => copy(message.content)} className='ml-auto'>forget</button>
+            <button onClick={() => copy(message.content)}><HandThumbUpIcon /></button>
+            <button onClick={() => copy(message.content)}><HandThumbDownIcon /></button>
           </div>
         </div>
       </div>
@@ -67,7 +71,7 @@ export const Chat = ({className}: {className: string}) => {
         as='div'
         show
         appear
-        className='h-[calc(100%-86px)] bg-slate-50 overflow-auto divide-y'
+        className='h-[calc(100%-86px)] bg-slate-50 overflow-auto'
         ref={chatLogRef}
       >
         {error && error.message}
