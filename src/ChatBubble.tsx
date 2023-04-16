@@ -8,6 +8,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { ChatCompletionRequestMessage } from "openai";
 import { useCopyToClipboard } from "./useCopyToClipboard";
+import { createContext, useContext, useEffect, useState } from "react";
+import { BlocksContext } from "./useBlocks";
 
 export function Avatar({
   role,
@@ -34,6 +36,7 @@ export const ChatBubble = ({
   const [value, copy] = useCopyToClipboard();
 
   const blocks = message.content.split(/\n\n/);
+  const { addBlock } = useContext(BlocksContext);
   return (
     <div className="grid grid-cols-[min-content,5fr] p-2 py-2 self-start group">
       <h4 className="w-16 font-semibold tracking-tight flex flex-col justify-between gap-2 flex-grow h-full">
@@ -43,7 +46,7 @@ export const ChatBubble = ({
         {blocks.map((block, idx) => (
           <div
             className="prose prose-sm text-slate-500 leading-snug p-2 py-1 !-my-0.5 cursor-pointer hover:text-black rounded hover:shadow hover:outline outline-slate-200 outline-1  transition-all duration-100 active:outline-offset-2 active:bg-blue-50/50"
-            onClick={() => copy(block)}
+            onClick={() => addBlock({ role: message.role, content: block })}
             key={`block-${idx}`}
           >
             <ReactMarkdown key={idx}>{block}</ReactMarkdown>

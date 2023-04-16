@@ -1,11 +1,12 @@
 import "./App.css";
 import { Chat } from "./Chat";
+import { BlocksProvider } from "./useBlocks";
 
 function App() {
   return (
-    <div className="flex justify-center items-center h-screen bg-slate-200">
-      <Chat className="rounded-lg border border-slate-300 shadow w-[700px] h-[90vh] m-auto overflow-clip" />
-    </div>
+    <BlocksProvider>
+      <Chat className="rounded-lg h-screen bg-slate-100 grid grid-rows-[50px,1fr,min-content]" />
+    </BlocksProvider>
   );
 }
 
