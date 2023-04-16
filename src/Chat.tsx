@@ -39,7 +39,10 @@ export const ChatBubble = ({
       <h4 className="w-16 font-semibold tracking-tight flex flex-col justify-between gap-2 flex-grow h-full">
         <Avatar role={message.role} />
       </h4>
-      <div className="text-sm p-4 space-y-3 leading-snug self-start prose prose-sm prose-slate prose-headings:text-pink-700 bg-white shadow rounded-lg">
+      <div
+        className="text-sm p-4 space-y-3 leading-snug self-start prose prose-sm prose-slate prose-headings:text-pink-700 bg-white shadow rounded-lg cursor-pointer hover:ring-2"
+        onClick={() => copy(message.content)}
+      >
         <ReactMarkdown>{message.content}</ReactMarkdown>
       </div>
     </div>
